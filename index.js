@@ -21,30 +21,9 @@ passport.use(
 	)
 );
 
-// app.get("/", (req, res) => {
-// 	res.send({ hi: "there" });
-// });
-
-app.get(
-	"/auth/google",
-	passport.authenticate("google", {
-		scope: ["profile", "email"]
-	})
-);
-
-app.get("/auth/google/callback", passport.authenticate("google"));
-
-app.listen(PORT, function() {
-	console.log(
-		"============================================================="
-	);
-	console.log(
-		"Now listening on port %s! Visit localhost:%s in your browser.",
-		PORT,
-		PORT
-	);
+app.get("/", (req, res) => {
+	res.send({ hi: "there" });
 });
 
-// clientID 356495130493-cuo1qgqd65qhoij8m127t766vhckhbgj.apps.googleusercontent.com
 
-//clientSecret R0F0-mfbb_lDhFbEIEg6C62B
+
