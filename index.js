@@ -1,13 +1,32 @@
 const express = require("express");
-const User = require("./models/User");
-const passport = require("./server/services/passport");
 const mongoose = require("mongoose");
-const PORT = process.env.PORT || 5000;
+const cookieSession = require("cookie-session");
+const User = require("./models/User");
+const passport = require("passport");
+require("./server/services/passport");
+const keys = require("./config/keys");
 
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 //----------------------------------------------------------//
-//           ****    MongoDB Connection ****                //
+//           **** Middleware ****                           //
+//----------------------------------------------------------//
+
+//Setup cookie's maximum age
+app.use(
+	cookieSession({
+		maxAge: 30 * 24 * 60 * 60 * 1000,
+		keys: [keys.cookieKey]
+	})
+);
+
+// Telling passport to use Cookie to handle authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
+//----------------------------------------------------------//
+//           **** MongoDB Connection ****                   //
 //----------------------------------------------------------//
 
 const db = process.env.MONGODB_URI || "mongodb://localhost/mySurvey";
@@ -20,13 +39,13 @@ mongoose.connect(db, function(error) {
 });
 
 //----------------------------------------------------------//
-//           ****    Routes Handler ****                    //
+//           **** Routes Handler ****                       //
 //----------------------------------------------------------//
 
 require("./server/routes/authRoutes")(app);
 
 //----------------------------------------------------------//
-//           ****    Application Listener ****              //
+//           **** Application Listener ****                 //
 //----------------------------------------------------------//
 
 app.listen(PORT, function() {
@@ -34,7 +53,7 @@ app.listen(PORT, function() {
 		"============================================================="
 	);
 	console.log(
-		"Now listening on port %s! Visit localhost:%s in your browser.",
+		"Server is listening on port %s! Visit localhost:%s in your browser.",
 		PORT,
 		PORT
 	);

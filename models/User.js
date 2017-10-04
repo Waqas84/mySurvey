@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 //----------------------------------------------------------//
-//           ****    Creating User Model ****               //
+//           **** Creating User Model ****                  //
 //----------------------------------------------------------//
 const userSchema = new Schema({
 	googleId: String
